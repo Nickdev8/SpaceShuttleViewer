@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-
-</head>
-
-<body>
-  <a-assets>
-    <a-asset-item id="spaceshuttle" src="/SpaceShuttle/spaceshuttle.gltf"></a-asset-item>
-    <a-asset-item id="dummy" src="/Dummy/scene.gltf"></a-asset-item>
-
-  </a-assets>
-
-  <a-scene>
-    <a-entity position="0 0.5 -5" rotation="0 -90 -20" gltf-model="#spaceshuttle"></a-entity>
-    <a-entity position="0 1 -2" rotation="-40 12 23" gltf-model="#dummy"></a-entity>
-  </a-scene>
-  <script src="script.js"></script>
-</body>
-
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-assets>
+      <a-asset-item id="spaceshuttle" src="/SpaceShuttle/spaceshuttle.gltf"></a-asset-item>
+      <a-asset-item id="dummy" src="/Dummy/scene.gltf"></a-asset-item>
+      <img id="skyTexture" src="sky.jpg" alt="Skybox texture">
+    </a-assets>
+    
+    <a-scene background="color: #111">
+      <a-sky src="#skyTexture" rotation="0 0 0"></a-sky>
+      <a-entity id="cameraRig" position="0 1.6 0" keyboard-vertical-movement>
+        <a-camera wasd-controls="fly: true" look-controls></a-camera>
+      </a-entity>
+      
+      <a-entity position="0 0.5 -7" rotation="-12 -70 -40" gltf-model="#spaceshuttle"></a-entity>
+      <a-entity position="0 1 -2" rotation="-10 12 23" gltf-model="#dummy"></a-entity>
+    </a-scene>
+    
+    <script>
+      AFRAME.registerComponent('keyboard-vertical-movement', {
+        init: function () {
+          window.addEventListener('keydown', (event) => {
+            let pos = this.el.getAttribute('position');
+            if (event.keyCode == 82) { // 'r'
+              pos.y += 0.2;
+              this.el.setAttribute('position', pos);
+            } else if (event.keyCode == 70) { // 'f'
+              pos.y -= 0.2;
+              this.el.setAttribute('position', pos);
+            }
+          });
+        }
+      });
+    </script>
+    <script src="script.js"></script>
+  </body>
 </html>
